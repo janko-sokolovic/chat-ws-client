@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="app.css">
+    <script type="text/javascript" src="app/jquery.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="message-list-wrapper">
+    </div>
+
+    <div class="send-msg-wrapper">
+        <input class="message-input" placeholder="Write message..." />
+        <a class="send-btn" onclick="app.sendMessage()"> Send</a>
+    </div>
+    </div>
+
+    <div class="overlay">
+        <div class="modal">
+            <p>Choose your name</p>
+            <input class="choose-name-input" type="text" placeholder="Enter name here..." />
+            <a class="choose-name-button" onclick="app.selectUserName()"> Done </a>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="app/app.js"></script>
+</body>
+
+</html>
