@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './Chat.css';
 
-import ChatHistory from './ChatHistory';
+import ChatHistory from './ChatHistory/ChatHistory';
+import SendMessage from './SendMessage/SendMessage';
 
 class Chat extends Component {
 
@@ -13,6 +14,7 @@ class Chat extends Component {
         return (
             <div className="Chat">
                 <ChatHistory />
+                <SendMessage />
             </div>
         );
     }
