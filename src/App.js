@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import UserList from './components/UserList/UserList';
+import Chat from './components/Chat/Chat';
 
 class App extends Component {
   users;
@@ -20,6 +21,8 @@ class App extends Component {
       <div className="App">
 
         <UserList users={this.users} />
+
+        <Chat />
 
       </div>
     );
