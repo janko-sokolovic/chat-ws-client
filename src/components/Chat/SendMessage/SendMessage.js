@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import RaisedButton from 'material-ui/RaisedButton';
+
 import './SendMessage.css';
 
 class SendMessage extends Component {
@@ -8,7 +10,7 @@ class SendMessage extends Component {
         return (
             <div>
                 <input />
-                <button></button>
+                <RaisedButton> Send </RaisedButton>
             </div>
         );
     }
