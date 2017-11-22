@@ -5,13 +5,9 @@ import Drawer from 'material-ui/Drawer';
 import RaisedButton from 'material-ui/RaisedButton';
 import AppBar from 'material-ui/AppBar';
 import MenuItem from 'material-ui/MenuItem';
-import FontIcon from 'material-ui/FontIcon';
-
-import check from './check.png';
-
+import CheckCircle from 'material-ui-icons/CheckCircle'
 
 import './UserList.css';
-import User from '../User/User';
 
 class UserList extends Component {
 
@@ -23,17 +19,17 @@ class UserList extends Component {
         }
     }
 
-    handleToggle = () => { console.log(this.state.open); this.setState({ open: !this.state.open })};
+    handleToggle = () => { console.log(this.state.open); this.setState({ open: !this.state.open }) };
 
     render() {
         const userItems = this.state.users.map((user) =>
-            <MenuItem> {user.name}</MenuItem>
+            <MenuItem key={user.name} leftIcon={<CheckCircle color={"#2BB673"} />}> {user.name}</MenuItem>
         );
 
         return (<div className="UserList">
-        <img src={check}/>
+            
             <RaisedButton
-                label="Toggle Drawer"
+                label="Show active users"
                 onClick={this.handleToggle}
             />
             <Drawer width={200} open={this.state.open}>
