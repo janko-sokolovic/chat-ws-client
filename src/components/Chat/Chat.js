@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
+import Paper from 'material-ui/Paper';
 import ChatHistory from './ChatHistory/ChatHistory';
 import SendMessage from './SendMessage/SendMessage';
+import Divider from 'material-ui/Divider';
+
 
 class Chat extends Component {
 
     render() {
-
         const styles = {
             height: 500,
             width: 500,
             margin: 20,
-            padding:10,
             textAlign: 'center',
-            margin: '0 auto',
-            backgroundColor:'#eaeaea'
+            margin: '20px auto',
+            position: 'relative'
         };
         return (
-            <div className="Chat" style={styles}>
+            <Paper style={styles} zDepth={2} >
                 <ChatHistory />
+                <Divider />
                 <SendMessage />
-            </div>
+            </Paper>
         );
     }
 }
