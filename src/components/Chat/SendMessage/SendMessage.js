@@ -8,13 +8,13 @@ class SendMessage extends Component {
         const styles = {
             position: 'absolute',
             bottom: 0,
-            width:'100%'
+            width: '100%'
         };
-        const fieldStyles= {
-            width:'70%'
+        const fieldStyles = {
+            width: '70%'
         };
         const btnStyles = {
-            marginLeft:10
+            marginLeft: 10
         };
         return (
             <div style={styles}>

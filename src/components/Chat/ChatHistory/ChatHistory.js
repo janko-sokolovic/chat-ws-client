@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-
+import ChatMessage from './ChatMessage';
 
 class ChatHistory extends Component {
     render() {
         const style = {
             backgroundColor: '#eaeaea',
-            padding: 10,
+            padding: 15,
             height:'420px'
         };
         return (
             <div style={style}>
-                Chat history here
+                <ChatMessage />
+                <ChatMessage />
             </div>
         );
     }
