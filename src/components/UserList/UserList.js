@@ -19,7 +19,7 @@ class UserList extends Component {
         }
     }
 
-    handleToggle = () => { console.log(this.state.open); this.setState({ open: !this.state.open }) };
+    handleToggle = () => { this.setState({ open: !this.state.open }) };
 
     render() {
         const userItems = this.state.users.map((user) =>
