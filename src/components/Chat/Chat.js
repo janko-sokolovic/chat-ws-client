@@ -5,7 +5,6 @@ import SendMessage from './SendMessage/SendMessage';
 import Divider from 'material-ui/Divider';
 import Singleton from '../../socket';
 
-
 class Chat extends Component {
 
     constructor(props) {
@@ -13,13 +12,17 @@ class Chat extends Component {
 
         this.socket = Singleton.getInstance();
 
-        this.socket.onmessage = function(msg){
-            console.log(msg);
-        }
         this.state = {
+            messages: []
+        }
 
+        this.socket.onmessage = (response) => {
+            let messages = this.state.messages;
+            messages.push(JSON.parse(response.data));
+            this.setState({ messages: messages });
         }
     }
+
     render() {
         const styles = {
             height: 500,
@@ -30,7 +33,7 @@ class Chat extends Component {
         };
         return (
             <Paper style={styles} zDepth={2} >
-                <ChatHistory />
+                <ChatHistory messages={this.state.messages} />
                 <Divider />
                 <SendMessage />
             </Paper>
