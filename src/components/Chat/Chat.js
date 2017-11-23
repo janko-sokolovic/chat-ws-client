@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
-import './Chat.css';
-
 import ChatHistory from './ChatHistory/ChatHistory';
 import SendMessage from './SendMessage/SendMessage';
 
 class Chat extends Component {
 
-    constructor(){
-        super();
-    }
-
     render() {
+
+        const styles = {
+            height: 500,
+            width: 500,
+            margin: 20,
+            padding:10,
+            textAlign: 'center',
+            margin: '0 auto',
+            backgroundColor:'#eaeaea'
+        };
         return (
-            <div className="Chat">
+            <div className="Chat" style={styles}>
                 <ChatHistory />
                 <SendMessage />
             </div>

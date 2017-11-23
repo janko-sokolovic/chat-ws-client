@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
-import './SendMessage.css';
-
 class SendMessage extends Component {
 
     render() {

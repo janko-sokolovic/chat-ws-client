@@ -2,7 +2,6 @@ import React, {
     Component
 } from 'react';
 import Drawer from 'material-ui/Drawer';
-import RaisedButton from 'material-ui/RaisedButton';
 import AppBar from 'material-ui/AppBar';
 import MenuItem from 'material-ui/MenuItem';
 import CheckCircle from 'material-ui-icons/CheckCircle'
@@ -14,12 +13,9 @@ class UserList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: props.users,
-            open: false
+            users: props.users
         }
     }
-
-    handleToggle = () => { this.setState({ open: !this.state.open }) };
 
     render() {
         const userItems = this.state.users.map((user) =>
@@ -27,12 +23,7 @@ class UserList extends Component {
         );
 
         return (<div className="UserList">
-            
-            <RaisedButton
-                label="Show active users"
-                onClick={this.handleToggle}
-            />
-            <Drawer width={200} open={this.state.open}>
+            <Drawer width={200} docked={true}>
                 <AppBar title="Users" showMenuIconButton={false} />
                 {userItems}
             </Drawer>
