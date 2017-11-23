@@ -2,13 +2,6 @@ import React, { Component } from 'react';
 
 
 class ChatMessage extends Component {
-    constructor(props) {
-        super(props);
-
-        // this.state = {
-        //     position: props.float
-        // }
-    }
     render() {
         const style = {
             display: 'block',
