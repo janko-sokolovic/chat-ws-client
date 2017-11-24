@@ -14,7 +14,8 @@ class ChatHistory extends Component {
         const style = {
             backgroundColor: '#eaeaea',
             padding: 15,
-            height: '420px'
+            height: '420px',
+            overflowY:'scroll'
         };
 
         const messages = this.state.messages.map((message, i) =>

@@ -21,6 +21,7 @@ class App extends Component {
 
     this.socket.onmessage = (response) => {
       let message = JSON.parse(response.data);
+      let users = this.state.users;
       switch (message.type) {
         case MessageType.TEXT_MESSAGE:
           let messages = this.state.messages;
@@ -28,8 +29,12 @@ class App extends Component {
           this.setState({ messages: messages, users: this.state.users });
           break;
         case MessageType.USER_JOINED:
-          let users = this.state.users;
           users.push(message.user);
+          this.setState({ messages: this.state.messages, users: users });
+          break;
+        case MessageType.USER_LEFT:
+          let index = users.indexOf(message.user);
+          users.splice(index, 1);
           this.setState({ messages: this.state.messages, users: users });
           break;
         default:
@@ -38,6 +43,10 @@ class App extends Component {
 
     this.socket.onopen = (evt) => {
       let messageDto = JSON.stringify({ user: 'Janko', text: '', type: MessageType.USER_JOINED });
+      this.socket.send(messageDto);
+    }
+    window.onbeforeunload = () => {
+      let messageDto = JSON.stringify({ user: 'Janko', text: '', type: MessageType.USER_LEFT });
       this.socket.send(messageDto);
     }
   }
