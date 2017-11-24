@@ -6,8 +6,6 @@ import AppBar from 'material-ui/AppBar';
 import MenuItem from 'material-ui/MenuItem';
 import CheckCircle from 'material-ui-icons/CheckCircle'
 
-import './UserList.css';
-
 class UserList extends Component {
 
     constructor(props) {
@@ -18,11 +16,10 @@ class UserList extends Component {
     }
 
     render() {
-        const userItems = this.state.users.map((user) =>
-            <MenuItem key={user.name} leftIcon={<CheckCircle color={"#2BB673"} />}> {user.name}</MenuItem>
+        const userItems = this.state.users.map((user,id) =>
+            <MenuItem key={id} leftIcon={<CheckCircle color={"#2BB673"} />}> {user}</MenuItem>
         );
-
-        return (<div className="UserList">
+        return (<div style={{textAlign:'left'}}>
             <Drawer width={200} docked={true}>
                 <AppBar title="Users" showMenuIconButton={false} />
                 {userItems}

@@ -3,24 +3,16 @@ import Paper from 'material-ui/Paper';
 import ChatHistory from './ChatHistory/ChatHistory';
 import SendMessage from './SendMessage/SendMessage';
 import Divider from 'material-ui/Divider';
-import Singleton from '../../socket';
 
 class Chat extends Component {
 
     constructor(props) {
         super(props);
 
-        this.socket = Singleton.getInstance();
-
         this.state = {
-            messages: []
+            messages: props.messages
         }
 
-        this.socket.onmessage = (response) => {
-            let messages = this.state.messages;
-            messages.push(JSON.parse(response.data));
-            this.setState({ messages: messages });
-        }
     }
 
     render() {

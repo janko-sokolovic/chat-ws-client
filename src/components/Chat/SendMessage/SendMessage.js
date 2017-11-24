@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Singleton from '../../../socket';
+import MessageType from './MessageType';
 
 class SendMessage extends Component {
 
@@ -43,7 +44,7 @@ class SendMessage extends Component {
     }
 
     sendMessage() {
-        let messageDto = JSON.stringify({ user: 'Janko', text: this.state.inputValue });
+        let messageDto = JSON.stringify({ user: 'Janko', text: this.state.inputValue, type:MessageType.TEXT_MESSAGE });
         this.socket.send(messageDto);
     }
 
