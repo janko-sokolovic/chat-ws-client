@@ -26,7 +26,7 @@ class ChatMessage extends Component {
         const message = this.state.message;
         return (
             <div style={style}>
-                <span style={textStyle}>{message.text}</span>
+                <span style={textStyle}>{message.data}</span>
             </div>
         );
     }

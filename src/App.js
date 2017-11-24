@@ -40,8 +40,8 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div className="App">
-          <UserList users={this.state.users} />
-          <Chat messages={this.state.messages} />
+          <UserList users={this.state.users } />
+          <Chat messages={this.state.messages} thisUser={this.state.thisUser} />
           <Dialog
             title="Choose your name"
             actions={actions}
@@ -64,7 +64,7 @@ class App extends Component {
 
     this.socket.onmessage = (response) => {
       let message = JSON.parse(response.data);
-      let users = this.state.users;
+      let currentUsers = this.state.users;
       switch (message.type) {
         case MessageType.TEXT_MESSAGE:
           let messages = this.state.messages;
@@ -72,26 +72,28 @@ class App extends Component {
           this.setState({ messages: messages, users: this.state.users, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
           break;
         case MessageType.USER_JOINED:
-          users.push(message.user);
-          this.setState({ messages: this.state.messages, users: users, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
+          let allUsers = message.data.split(",");
+          console.log("all", allUsers);
+          this.setState({ messages: this.state.messages, users: allUsers, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
+          console.log(this.state);
           break;
         case MessageType.USER_LEFT:
-          let index = users.indexOf(message.user);
-          users.splice(index, 1);
-          this.setState({ messages: this.state.messages, users: users, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
+          // let index = users.indexOf(message.user);
+          // users.splice(index, 1);
+          // this.setState({ messages: this.state.messages, users: users, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
           break;
         default:
       }
     }
 
     window.onbeforeunload = () => {
-      let messageDto = JSON.stringify({ user: 'Janko', text: '', type: MessageType.USER_LEFT });
+      let messageDto = JSON.stringify({ user: this.state.thisUser, data: '', type: MessageType.USER_LEFT });
       this.socket.send(messageDto);
     }
   }
 
   sendJoinedMessage() {
-    let messageDto = JSON.stringify({ user: this.state.thisUser, text: '', type: MessageType.USER_JOINED });
+    let messageDto = JSON.stringify({ user: this.state.thisUser, data: '', type: MessageType.USER_JOINED });
     this.socket.send(messageDto);
   }
 

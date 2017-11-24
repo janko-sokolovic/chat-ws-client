@@ -27,7 +27,7 @@ class Chat extends Component {
             <Paper style={styles} zDepth={2} >
                 <ChatHistory messages={this.state.messages} />
                 <Divider />
-                <SendMessage />
+                <SendMessage thisUser={this.state.thisUser} />
             </Paper>
         );
     }
