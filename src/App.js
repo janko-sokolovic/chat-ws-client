@@ -8,15 +8,58 @@ import Chat from './components/Chat/Chat';
 import Singleton from './socket';
 import MessageType from './components/Chat/SendMessage/MessageType';
 
+import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+
 class App extends Component {
   constructor() {
     super();
 
     this.state = {
       users: [],
-      messages: []
+      messages: [],
+      thisUser: "",
+      modalOpen: true
     }
+  }
 
+  render() {
+    const actions = [
+      <RaisedButton
+        label="Choose"
+        primary={true}
+        onClick={this.handleClose.bind(this)}
+      />
+    ];
+
+    const modalStyle = {
+      width: '600px'
+    };
+
+    return (
+      <MuiThemeProvider>
+        <div className="App">
+          <UserList users={this.state.users} />
+          <Chat messages={this.state.messages} />
+          <Dialog
+            title="Choose your name"
+            actions={actions}
+            modal={true}
+            open={this.state.modalOpen}
+            contentStyle={modalStyle}>
+            <TextField
+              hintText="Write your name here..."
+              value={this.state.thisUser}
+              onChange={this.updateInputValue.bind(this)}
+            />
+          </Dialog>
+        </div>
+      </MuiThemeProvider>
+    );
+  }
+
+  registerSocket() {
     this.socket = Singleton.getInstance();
 
     this.socket.onmessage = (response) => {
@@ -26,40 +69,40 @@ class App extends Component {
         case MessageType.TEXT_MESSAGE:
           let messages = this.state.messages;
           messages.push(JSON.parse(response.data));
-          this.setState({ messages: messages, users: this.state.users });
+          this.setState({ messages: messages, users: this.state.users, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
           break;
         case MessageType.USER_JOINED:
           users.push(message.user);
-          this.setState({ messages: this.state.messages, users: users });
+          this.setState({ messages: this.state.messages, users: users, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
           break;
         case MessageType.USER_LEFT:
           let index = users.indexOf(message.user);
           users.splice(index, 1);
-          this.setState({ messages: this.state.messages, users: users });
+          this.setState({ messages: this.state.messages, users: users, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
           break;
         default:
       }
     }
 
-    this.socket.onopen = (evt) => {
-      let messageDto = JSON.stringify({ user: 'Janko', text: '', type: MessageType.USER_JOINED });
-      this.socket.send(messageDto);
-    }
     window.onbeforeunload = () => {
       let messageDto = JSON.stringify({ user: 'Janko', text: '', type: MessageType.USER_LEFT });
       this.socket.send(messageDto);
     }
   }
 
-  render() {
-    return (
-      <MuiThemeProvider>
-        <div className="App">
-          <UserList users={this.state.users} />
-          <Chat messages={this.state.messages} />
-        </div>
-      </MuiThemeProvider>
-    );
+  sendJoinedMessage() {
+    let messageDto = JSON.stringify({ user: this.state.thisUser, text: '', type: MessageType.USER_JOINED });
+    this.socket.send(messageDto);
+  }
+
+  handleClose() {
+    this.registerSocket();
+    this.setState({ messages: this.state.messages, users: this.state.users, thisUser: this.state.thisUser, modalOpen: !this.state.modalOpen });
+    this.sendJoinedMessage();
+  }
+
+  updateInputValue(evt) {
+    this.setState({ messages: this.state.messages, users: this.state.users, thisUser: evt.target.value, modalOpen: this.state.modalOpen });
   }
 }
 
