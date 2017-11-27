@@ -87,7 +87,6 @@ class App extends Component {
         case MessageType.USER_JOINED_ACK:
           let thisUser = message.user;
           self.setState({ thisUser });
-          console.log(JSON.stringify(self.state));
           break;
         default:
       }
