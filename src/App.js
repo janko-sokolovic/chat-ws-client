@@ -19,7 +19,7 @@ class App extends Component {
     this.state = {
       users: [],
       messages: [],
-      thisUser: "",
+      thisUser: {name:''},
       modalOpen: true
     }
   }
@@ -50,7 +50,7 @@ class App extends Component {
             contentStyle={modalStyle}>
             <TextField
               hintText="Write your name here..."
-              value={this.state.thisUser}
+              value={this.state.thisUser.name}
               onChange={this.updateInputValue.bind(this)}
             />
           </Dialog>
@@ -105,7 +105,7 @@ class App extends Component {
   }
 
   updateInputValue(evt) {
-    this.setState({ messages: this.state.messages, users: this.state.users, thisUser: evt.target.value, modalOpen: this.state.modalOpen });
+    this.setState({ messages: this.state.messages, users: this.state.users, thisUser: {name:evt.target.value}, modalOpen: this.state.modalOpen });
   }
 }
 
