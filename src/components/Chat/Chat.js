@@ -14,7 +14,7 @@ const Chat = ({ messages, thisUser }) => {
     };
     return (
         <Paper style={styles} zDepth={2} >
-            <ChatHistory messages={messages} />
+            <ChatHistory messages={messages} thisUser={thisUser} />
             <Divider />
             <SendMessage thisUser={thisUser} />
         </Paper>
