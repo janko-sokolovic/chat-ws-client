@@ -40,7 +40,7 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div className="App">
-          <UserList users={this.state.users } />
+          <UserList users={this.state.users} />
           <Chat messages={this.state.messages} thisUser={this.state.thisUser} />
           <Dialog
             title="Choose your name"
@@ -65,6 +65,9 @@ class App extends Component {
     this.socket.onmessage = (response) => {
       let message = JSON.parse(response.data);
       let currentUsers = this.state.users;
+      let allUsers;
+
+      console.log("State: " , this.state.thisUser);
       switch (message.type) {
         case MessageType.TEXT_MESSAGE:
           let messages = this.state.messages;
@@ -72,15 +75,12 @@ class App extends Component {
           this.setState({ messages: messages, users: this.state.users, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
           break;
         case MessageType.USER_JOINED:
-          let allUsers = message.data.split(",");
-          console.log("all", allUsers);
+          allUsers = JSON.parse(message.data);
           this.setState({ messages: this.state.messages, users: allUsers, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
-          console.log(this.state);
           break;
         case MessageType.USER_LEFT:
-          // let index = users.indexOf(message.user);
-          // users.splice(index, 1);
-          // this.setState({ messages: this.state.messages, users: users, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
+          allUsers = JSON.parse(message.data);
+          this.setState({ messages: this.state.messages, users: allUsers, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
           break;
         default:
       }
@@ -95,6 +95,7 @@ class App extends Component {
   sendJoinedMessage() {
     let messageDto = JSON.stringify({ user: this.state.thisUser, data: '', type: MessageType.USER_JOINED });
     this.socket.send(messageDto);
+    console.log("dto", messageDto);
   }
 
   handleClose() {

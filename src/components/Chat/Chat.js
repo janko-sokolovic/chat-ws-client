@@ -10,7 +10,8 @@ class Chat extends Component {
         super(props);
 
         this.state = {
-            messages: props.messages
+            messages: props.messages,
+            thisUser: props.thisUser
         }
 
     }
@@ -27,7 +28,7 @@ class Chat extends Component {
             <Paper style={styles} zDepth={2} >
                 <ChatHistory messages={this.state.messages} />
                 <Divider />
-                <SendMessage thisUser={this.state.thisUser} />
+                <SendMessage thisUser={this.props.thisUser} />
             </Paper>
         );
     }

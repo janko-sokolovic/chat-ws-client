@@ -16,9 +16,8 @@ class UserList extends Component {
     }
 
     render() {
-        console.log("users" ,this.state.users);
-        const userItems = this.state.users.map((user, id) =>
-            <MenuItem key={id} leftIcon={<CheckCircle color={"#2BB673"} />}> {user} </MenuItem>
+        const userItems = this.props.users.map((user) =>
+            <MenuItem key={user.id} leftIcon={<CheckCircle color={"#2BB673"} />}> {user.name} </MenuItem>
         );
         return (<div style={{textAlign:'left'}}>
             <Drawer width={200} docked={true}>
