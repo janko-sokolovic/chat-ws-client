@@ -47,7 +47,7 @@ class SendMessage extends Component {
     sendMessage() {
         let messageDto = JSON.stringify({ user: this.props.thisUser, data: this.state.inputValue, type:MessageType.TEXT_MESSAGE });
         this.socket.send(messageDto);
-        console.log(messageDto, this.props)
+        this.state.inputValue = '';
     }
 
     updateInputValue(evt) {

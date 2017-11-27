@@ -1,0 +1,11 @@
+.ChatHistory {
+    background-color: '#eaeaea';
+    padding: 15;
+    height: '420px';
+    overflow-y: 'scroll';
+    background-color:red;
+}
+
+.App {
+    background:blue;
+}

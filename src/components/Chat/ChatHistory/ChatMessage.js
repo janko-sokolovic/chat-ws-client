@@ -1,35 +1,24 @@
 import React, { Component } from 'react';
 
+const ChatMessage = ({message}) => {
 
-class ChatMessage extends Component {
+    const style = {
+        display: 'block',
+        height: '40px'
+    };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            message: props.message
-        }
+    const textStyle = {
+        float: 'right',
+        backgroundColor: '#fff',
+        padding: '6px 10px',
+        borderRadius: '15px'
     }
 
-    render() {
-        const style = {
-            display: 'block',
-            height: '40px'
-        };
-
-        const textStyle = {
-            float: 'right',
-            backgroundColor: '#fff',
-            padding: '6px 10px',
-            borderRadius: '15px'
-        }
-
-        const message = this.state.message;
-        return (
-            <div style={style}>
-                <span style={textStyle}>{message.data}</span>
-            </div>
-        );
-    }
+    return (
+        <div style={style}>
+            <span style={textStyle}>{message.data}</span>
+        </div>
+    );
 }
 
 export default ChatMessage;

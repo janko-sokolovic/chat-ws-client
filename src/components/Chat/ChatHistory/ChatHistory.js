@@ -1,33 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ChatMessage from './ChatMessage';
 
-class ChatHistory extends Component {
+const ChatHistory = ({messages}) => {
+    const style = {
+        backgroundColor: '#eaeaea',
+        padding: 15,
+        height: '420px',
+        overflowY:'scroll'
+    };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            messages: props.messages
-        }
-    }
+    const msgs = messages.map((message, i) =>
+        <ChatMessage key={i} message={message} />
+    );
 
-    render() {
-        const style = {
-            backgroundColor: '#eaeaea',
-            padding: 15,
-            height: '420px',
-            overflowY:'scroll'
-        };
-
-        const messages = this.state.messages.map((message, i) =>
-            <ChatMessage key={i} message={message} />
-        );
-
-        return (
-            <div style={style}>
-                {messages}
-            </div>
-        );
-    }
+    return (
+        <div style={style}>
+            {msgs}
+        </div>
+    ); 
 }
 
 export default ChatHistory;
