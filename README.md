@@ -1,2 +1,7 @@
-# chat-ws-client
-Simple client for chat using server from - https://github.com/jasofalcon/chat-ws-java
+## Simple chat client app converted to React
+
+# Setup
+``` npm i ```
+
+# Run
+``` npm start ```
