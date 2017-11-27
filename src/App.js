@@ -19,17 +19,18 @@ class App extends Component {
     this.state = {
       users: [],
       messages: [],
-      thisUser: {name:''},
-      modalOpen: true
+      thisUser: null,
+      modalOpen: true,
+      usernameInput: ''
     }
   }
 
   render() {
-    const actions = [
+    const modalActions = [
       <RaisedButton
         label="Choose"
         primary={true}
-        onClick={this.handleClose.bind(this)}
+        onClick={() => this.handleClose()}
       />
     ];
 
@@ -44,13 +45,13 @@ class App extends Component {
           <Chat messages={this.state.messages} thisUser={this.state.thisUser} />
           <Dialog
             title="Choose your name"
-            actions={actions}
+            actions={modalActions}
             modal={true}
             open={this.state.modalOpen}
             contentStyle={modalStyle}>
             <TextField
               hintText="Write your name here..."
-              value={this.state.thisUser.name}
+              value={this.state.usernameInput}
               onChange={this.updateInputValue.bind(this)}
             />
           </Dialog>
@@ -60,27 +61,31 @@ class App extends Component {
   }
 
   registerSocket() {
+    let self = this;
     this.socket = Singleton.getInstance();
 
     this.socket.onmessage = (response) => {
       let message = JSON.parse(response.data);
-      let currentUsers = this.state.users;
-      let allUsers;
+      let users;
 
-      console.log("State: " , this.state.thisUser);
       switch (message.type) {
         case MessageType.TEXT_MESSAGE:
-          let messages = this.state.messages;
+          let messages = self.state.messages;
           messages.push(JSON.parse(response.data));
-          this.setState({ messages: messages, users: this.state.users, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
+          self.setState({ messages: messages });
           break;
         case MessageType.USER_JOINED:
-          allUsers = JSON.parse(message.data);
-          this.setState({ messages: this.state.messages, users: allUsers, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
+          users = JSON.parse(message.data);
+          self.setState({ users });
           break;
         case MessageType.USER_LEFT:
-          allUsers = JSON.parse(message.data);
-          this.setState({ messages: this.state.messages, users: allUsers, thisUser: this.state.thisUser, modalOpen: this.state.modalOpen });
+          users = JSON.parse(message.data);
+          self.setState({ users });
+          break;
+        case MessageType.USER_JOINED_ACK:
+          let thisUser = message.user;
+          self.setState({ thisUser });
+          console.log(JSON.stringify(self.state));
           break;
         default:
       }
@@ -93,7 +98,7 @@ class App extends Component {
   }
 
   sendJoinedMessage() {
-    let messageDto = JSON.stringify({ user: this.state.thisUser, data: '', type: MessageType.USER_JOINED });
+    let messageDto = JSON.stringify({ user: this.state.usernameInput, data: '', type: MessageType.USER_JOINED });
     this.socket.send(messageDto);
     console.log("dto", messageDto);
   }
@@ -105,7 +110,7 @@ class App extends Component {
   }
 
   updateInputValue(evt) {
-    this.setState({ messages: this.state.messages, users: this.state.users, thisUser: {name:evt.target.value}, modalOpen: this.state.modalOpen });
+    this.setState({ messages: this.state.messages, users: this.state.users, usernameInput: evt.target.value, modalOpen: this.state.modalOpen });
   }
 }
 
