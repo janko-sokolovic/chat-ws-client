@@ -30,7 +30,7 @@ class App extends Component {
       <RaisedButton
         label="Choose"
         primary={true}
-        onClick={() => this.handleClose()}
+        onClick={() => this.onChooseName()}
       />
     ];
 
@@ -38,11 +38,13 @@ class App extends Component {
       width: '600px'
     };
 
+    const chat = <Chat messages={this.state.messages} thisUser={this.state.thisUser} />;
+
     return (
       <MuiThemeProvider>
         <div className="App">
           <UserList users={this.state.users} />
-          <Chat messages={this.state.messages} thisUser={this.state.thisUser} />
+          {this.state.users.length > 0 ? chat : ''}
           <Dialog
             title="Choose your name"
             actions={modalActions}
@@ -52,7 +54,7 @@ class App extends Component {
             <TextField
               hintText="Write your name here..."
               value={this.state.usernameInput}
-              onChange={this.updateInputValue.bind(this)}
+              onChange={(event) => this.updateInputValue(event.target.value)}
             />
           </Dialog>
         </div>
@@ -91,26 +93,28 @@ class App extends Component {
       }
     }
 
+    this.socket.onopen = () => {
+      this.sendJoinedMessage();
+    }
+
     window.onbeforeunload = () => {
-      let messageDto = JSON.stringify({ user: this.state.thisUser, data: '', type: MessageType.USER_LEFT });
+      let messageDto = JSON.stringify({ user: this.state.thisUser, type: MessageType.USER_LEFT });
       this.socket.send(messageDto);
     }
   }
 
   sendJoinedMessage() {
-    let messageDto = JSON.stringify({ user: this.state.usernameInput, data: '', type: MessageType.USER_JOINED });
+    let messageDto = JSON.stringify({ user: this.state.usernameInput, type: MessageType.USER_JOINED });
     this.socket.send(messageDto);
-    console.log("dto", messageDto);
   }
 
-  handleClose() {
+  onChooseName() {
     this.registerSocket();
-    this.setState({ messages: this.state.messages, users: this.state.users, thisUser: this.state.thisUser, modalOpen: !this.state.modalOpen });
-    this.sendJoinedMessage();
+    this.setState({ modalOpen: false });
   }
 
-  updateInputValue(evt) {
-    this.setState({ messages: this.state.messages, users: this.state.users, usernameInput: evt.target.value, modalOpen: this.state.modalOpen });
+  updateInputValue(value) {
+    this.setState({ usernameInput: value });
   }
 }
 
