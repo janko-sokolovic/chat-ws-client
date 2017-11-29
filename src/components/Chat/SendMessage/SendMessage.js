@@ -38,10 +38,17 @@ class SendMessage extends Component {
                     style={fieldStyle}
                     value={this.state.inputValue}
                     onChange={this.updateInputValue.bind(this)}
+                    onKeyPress={this.handleKeyPress}
                 />
-                <RaisedButton style={btnStyles} onClick={this.sendMessage.bind(this)}> Send </RaisedButton>
+                <RaisedButton style={btnStyles} onClick={this.sendMessage.bind(this)} > Send </RaisedButton>
             </div>
         );
+    }
+
+    handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            this.sendMessage();
+        }
     }
 
     sendMessage() {
