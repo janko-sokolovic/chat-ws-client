@@ -3,14 +3,18 @@ import './App.css';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import UserList from './components/UserList/UserList';
-import Chat from './components/Chat/Chat';
+import UserList from './containers/UserList/UserList';
+import Chat from './containers/Chat/Chat';
 import Singleton from './socket';
-import MessageType from './components/Chat/SendMessage/MessageType';
+import MessageType from './containers/Chat/SendMessage/MessageType';
 
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+
+import { connect } from 'react-redux';
+import { userJoined, userJoinedAck, userLeft, messageReceived } from './actions/index';
+import { bindActionCreators } from 'redux';
 
 class App extends Component {
   constructor() {
@@ -38,13 +42,11 @@ class App extends Component {
       width: '600px'
     };
 
-    const chat = <Chat messages={this.state.messages} thisUser={this.state.thisUser} />;
-
     return (
       <MuiThemeProvider>
         <div className="App">
           <UserList users={this.state.users} />
-          {this.state.users.length > 0 ? chat : ''}
+          <Chat />
           <Dialog
             title="Choose your name"
             actions={modalActions}
@@ -52,9 +54,11 @@ class App extends Component {
             open={this.state.modalOpen}
             contentStyle={modalStyle}>
             <TextField
+              autoFocus
               hintText="Write your name here..."
               value={this.state.usernameInput}
               onChange={(event) => this.updateInputValue(event.target.value)}
+              onKeyPress={this.handleKeyPress}
             />
           </Dialog>
         </div>
@@ -72,21 +76,19 @@ class App extends Component {
 
       switch (message.type) {
         case MessageType.TEXT_MESSAGE:
-          let messages = self.state.messages;
-          messages.push(JSON.parse(response.data));
-          self.setState({ messages: messages });
+        self.props.messageReceived(message);
           break;
         case MessageType.USER_JOINED:
           users = JSON.parse(message.data);
-          self.setState({ users });
+          self.props.userJoined(users);
           break;
         case MessageType.USER_LEFT:
           users = JSON.parse(message.data);
-          self.setState({ users });
+          self.props.userLeft(users);
           break;
         case MessageType.USER_JOINED_ACK:
           let thisUser = message.user;
-          self.setState({ thisUser });
+          self.props.userJoinedAck(thisUser);
           break;
         default:
       }
@@ -97,7 +99,7 @@ class App extends Component {
     }
 
     window.onbeforeunload = () => {
-      let messageDto = JSON.stringify({ user: this.state.thisUser, type: MessageType.USER_LEFT });
+      let messageDto = JSON.stringify({ user: this.props.thisUser, type: MessageType.USER_LEFT });
       this.socket.send(messageDto);
     }
   }
@@ -115,6 +117,33 @@ class App extends Component {
   updateInputValue(value) {
     this.setState({ usernameInput: value });
   }
+
+  handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      this.onChooseName();
+    }
+  }
 }
 
-export default App;
+// Whatever is returned is going to show up as props inside UserList
+function mapStateToProps(state) {
+  return {
+    messages: state.message,
+    users: state.users,
+    thisUser: state.thisUser
+  }
+}
+
+// // Anything returned will show up as props in UserList (i.e. method userJoined)
+function mapDispatchToProps(dispatch, props) {
+  // Whenever userJoined is called, pass result to all reducers
+  return bindActionCreators({
+    userJoined:userJoined,
+    userJoinedAck: userJoinedAck,
+    userLeft: userLeft,
+    messageReceived: messageReceived
+  }, dispatch);
+}
+
+// Promote component to container
+export default connect(mapStateToProps, mapDispatchToProps)(App);
