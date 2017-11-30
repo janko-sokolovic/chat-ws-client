@@ -39,11 +39,13 @@ class App extends Component {
       width: '600px'
     };
 
+    const chat = this.state.modalOpen ? '' : <Chat />
+
     return (
       <MuiThemeProvider>
         <div className="App">
           <UserList users={this.state.users} />
-          <Chat />
+          {chat}
           <Dialog
             title="Choose your name"
             actions={modalActions}
