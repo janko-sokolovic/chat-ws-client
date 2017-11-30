@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 class ChatHistory extends Component {
 
@@ -28,7 +27,6 @@ class ChatHistory extends Component {
     }
 
     renderMessages(message, i) {
-        console.log("msgsss");
         const style = {
             display: 'block',
             margin: '5px 0'
@@ -54,7 +52,7 @@ class ChatHistory extends Component {
         }
 
         return (
-            <div style={style}>
+            <div key={i} style={style}>
                 <span style={textStyle}>
                     <span style={nameStyle}>{message.user.name}</span>
                     <br />

@@ -4,7 +4,6 @@ import AppBar from 'material-ui/AppBar';
 import MenuItem from 'material-ui/MenuItem';
 import CheckCircle from 'material-ui-icons/CheckCircle';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 class UserList extends Component {
 

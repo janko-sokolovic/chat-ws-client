@@ -5,7 +5,6 @@ import Singleton from '../../../socket';
 import MessageType from './MessageType';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 class SendMessage extends Component {
 
