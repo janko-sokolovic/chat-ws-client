@@ -21,9 +21,6 @@ class App extends Component {
     super();
 
     this.state = {
-      users: [],
-      messages: [],
-      thisUser: null,
       modalOpen: true,
       usernameInput: ''
     }
@@ -76,7 +73,7 @@ class App extends Component {
 
       switch (message.type) {
         case MessageType.TEXT_MESSAGE:
-        self.props.messageReceived(message);
+          self.props.messageReceived(message);
           break;
         case MessageType.USER_JOINED:
           users = JSON.parse(message.data);
@@ -125,7 +122,6 @@ class App extends Component {
   }
 }
 
-// Whatever is returned is going to show up as props inside UserList
 function mapStateToProps(state) {
   return {
     messages: state.message,
@@ -134,16 +130,13 @@ function mapStateToProps(state) {
   }
 }
 
-// // Anything returned will show up as props in UserList (i.e. method userJoined)
 function mapDispatchToProps(dispatch, props) {
-  // Whenever userJoined is called, pass result to all reducers
   return bindActionCreators({
-    userJoined:userJoined,
+    userJoined: userJoined,
     userJoinedAck: userJoinedAck,
     userLeft: userLeft,
     messageReceived: messageReceived
   }, dispatch);
 }
 
-// Promote component to container
 export default connect(mapStateToProps, mapDispatchToProps)(App);

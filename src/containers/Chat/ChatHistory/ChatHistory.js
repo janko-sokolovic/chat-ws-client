@@ -14,7 +14,6 @@ class ChatHistory extends Component {
             flexDirection: 'column'
         };
 
-
         const msgs = this.props.messages.map((message, i) =>
             this.renderMessages(message, i)
         );

@@ -28,17 +28,10 @@ class UserList extends Component {
     }
 }
 
-// Whatever is returned is going to show up as props inside UserList
 function mapStateToProps(state) {
     return {
         users: state.users
     }
 }
-// // Anything returned will show up as props in UserList (i.e. method userJoined)
-// function mapDispatchToProps(dispatch) {
-//     // Whenever userJoined is called, pass result to all reducers
-//     return bindActionCreators({ userJoined: userJoined }, dispatch);
-// }
 
-// Promote component to container
 export default connect(mapStateToProps)(UserList);
